@@ -1,0 +1,26 @@
+[package]
+name = "ved"
+version = "0.1.0"
+edition = "2021"
+description = "A small, dependency-free vim-style terminal editor with built-in LSP and an embedded terminal"
+license = "MIT"
+
+[lib]
+name = "ved"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ved"
+path = "src/main.rs"
+
+# No dependencies on purpose: std + a handful of libc calls.
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+# Unwinding (not aborting) lets the event loop catch an internal error, save the unsaved buffers and
+# carry on; overflow checks turn silent wrap-around into a caught error instead of a wrong answer.
+panic = "unwind"
+overflow-checks = true
+strip = true
